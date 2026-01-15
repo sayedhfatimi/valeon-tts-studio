@@ -19,6 +19,7 @@ Valeon TTS Studio is a local-first web app for preparing long-form scripts and t
 - [Configuration](#configuration)
 - [Scripts](#scripts)
 - [Tech Stack](#tech-stack)
+- [License](#license)
 
 ## About
 Valeon TTS Studio focuses on reliable, production-ready narration workflows. It is optimized for long-form text with clear chunking controls, instant previews, and local configuration that never leaves your device.
@@ -65,3 +66,6 @@ npm run dev
 - Vite + React + TypeScript
 - Tailwind CSS + DaisyUI
 - TanStack Query + Zustand
+
+## License
+MIT. See `LICENSE`.
