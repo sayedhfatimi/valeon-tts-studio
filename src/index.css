@@ -1,0 +1,10 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap");
+@import "@fortawesome/fontawesome-free/css/all.min.css";
+@import "tailwindcss";
+@plugin "daisyui";
+
+:root {
+	--valeon-sky: 196 83% 94%;
+	--valeon-peach: 28 90% 92%;
+	--valeon-mist: 220 32% 96%;
+}
