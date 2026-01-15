@@ -8,7 +8,7 @@
   <strong>Prompt to audio, tuned for long-form narration.</strong>
 </p>
 
-Valeon TTS Studio is a local-first web app for preparing long-form scripts and turning them into audio with OpenAI TTS. Paste text or drop a .txt file, tune chunking rules, review cost estimates, and export audio or normalized speechtext. Everything stays in your browser except the TTS calls.
+Valeon TTS Studio is a local-first web app for preparing long-form scripts and turning them into audio with OpenAI TTS. Paste text or drop a .txt or .md file, tune chunking rules, review cost estimates, and export audio or normalized speechtext. Everything stays in your browser except the TTS calls.
 
 ## Table of Contents
 - [About](#about)
@@ -25,7 +25,7 @@ Valeon TTS Studio is a local-first web app for preparing long-form scripts and t
 Valeon TTS Studio focuses on reliable, production-ready narration workflows. It is optimized for long-form text with clear chunking controls, instant previews, and local configuration that never leaves your device.
 
 ## Features
-- Paste text or import plaintext .txt files.
+- Paste text or import .txt or .md text files.
 - Normalize and preview speechtext before synthesis.
 - Chunking presets for long-form narration, plus custom rules.
 - Model, voice, and output format selection.
@@ -45,7 +45,7 @@ npm run dev
 ```
 
 ## Usage
-1. Paste narration text or drop a .txt file into the input area.
+1. Paste narration text or drop a .txt or .md file into the input area.
 2. Open Configuration to add your OpenAI API key and select model, voice, and output format.
 3. Review the normalized speechtext and chunk stats.
 4. Click Synthesize audio to download files, or export the speechtext/config first.

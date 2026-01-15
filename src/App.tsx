@@ -110,7 +110,7 @@ const App = () => {
 		: config.chunking;
 
 	const buildBaseFilename = () => {
-		const fromFile = fileName?.replace(/\.txt$/i, "").trim() ?? "";
+		const fromFile = fileName?.replace(/\.(txt|md)$/i, "").trim() ?? "";
 		const candidate = fromFile || "valeon-tts";
 		const sanitized = candidate
 			.replace(/[^A-Za-z0-9._-]+/g, "-")
@@ -169,10 +169,14 @@ const App = () => {
 		if (!file) {
 			return;
 		}
+		const lowerName = file.name.toLowerCase();
 		const isTextFile =
-			file.type === "text/plain" || file.name.toLowerCase().endsWith(".txt");
+			file.type === "text/plain" ||
+			file.type === "text/markdown" ||
+			lowerName.endsWith(".txt") ||
+			lowerName.endsWith(".md");
 		if (!isTextFile) {
-			setFileNotice("Only plaintext .txt files are supported.");
+			setFileNotice("Only .txt or .md text files are supported.");
 			return;
 		}
 		const text = await file.text();
@@ -262,7 +266,7 @@ const App = () => {
 								Prompt to audio, tuned for long form narration
 							</h1>
 							<p className="max-w-2xl text-sm opacity-80 md:text-base">
-								Drop a plaintext file or paste text, tune chunking, and export
+								Drop a text or Markdown file or paste text, tune chunking, and export
 								speechtext or audio. Everything stays in your browser except the
 								TTS calls.
 							</p>
@@ -289,7 +293,7 @@ const App = () => {
 									<div>
 										<h2 className="card-title">Input</h2>
 										<p className="text-sm opacity-70">
-											Paste text or drop a .txt file. The file replaces the
+											Paste text or drop a .txt or .md file. The file replaces the
 											current text.
 										</p>
 									</div>
@@ -346,17 +350,17 @@ const App = () => {
 									<input
 										ref={fileInputRef}
 										type="file"
-										accept=".txt,text/plain"
+										accept=".txt,.md,text/plain,text/markdown"
 										className="hidden"
 										onChange={handleFileChange}
 									/>
 									<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 										<div>
 											<p className="text-sm font-medium">
-												Drop a text file here
+												Drop a text or Markdown file here
 											</p>
 											<p className="text-xs opacity-70">
-												Plaintext only. Drag and drop or browse.
+												Text or Markdown only. Drag and drop or browse.
 											</p>
 										</div>
 										<button
