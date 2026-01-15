@@ -11,7 +11,7 @@ type SectionBucket = {
 	paragraphs: string[];
 };
 
-const VALEON_SECTION_CHAR_LIMIT = 4000;
+const VALEON_SECTION_CHAR_LIMIT = 4096;
 
 const normalizeLine = (line: string) => line.replace(/[ \t]+/g, " ").trim();
 
@@ -19,6 +19,36 @@ export const normalizeText = (input: string) => {
 	const cleaned = input.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
 	const lines = cleaned.split("\n").map(normalizeLine);
 	return lines.join("\n").trim();
+};
+
+export const parseYamlFrontmatter = (input: string) => {
+	const normalized = input.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+	const lines = normalized.split("\n");
+	if (lines.length < 2) {
+		return null;
+	}
+	if (lines[0].trim() !== "---") {
+		return null;
+	}
+	for (let index = 1; index < lines.length; index += 1) {
+		const trimmed = lines[index].trim();
+		if (trimmed === "---" || trimmed === "...") {
+			return {
+				frontmatter: lines.slice(0, index + 1).join("\n"),
+				body: lines.slice(index + 1).join("\n"),
+				endLine: index + 1,
+			};
+		}
+	}
+	return null;
+};
+
+export const stripYamlFrontmatter = (input: string) => {
+	const parsed = parseYamlFrontmatter(input);
+	if (!parsed) {
+		return input;
+	}
+	return parsed.body.replace(/^\n+/, "");
 };
 
 const splitSentences = (text: string) => {

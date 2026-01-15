@@ -6,6 +6,7 @@ import {
 	useRef,
 	useState,
 } from "react";
+import HelpDialog from "./components/HelpDialog";
 import ThemeToggle from "./components/ThemeToggle";
 import { downloadBlob, downloadJson, downloadText } from "./lib/download";
 import { requestSpeech } from "./lib/openai";
@@ -15,6 +16,8 @@ import {
 	getHeadingMatcherInfo,
 	getTextStats,
 	normalizeText,
+	parseYamlFrontmatter,
+	stripYamlFrontmatter,
 } from "./lib/text";
 import {
 	OUTPUT_FORMATS,
@@ -46,6 +49,8 @@ const formatMinutes = (minutes: number) =>
 
 const formatChars = (value: number) => integerFormat.format(value);
 const formatCost = (value: number) => currencyFormat.format(value);
+const isMarkdownFileName = (value: string | null) =>
+	value ? value.toLowerCase().endsWith(".md") : false;
 
 const App = () => {
 	const {
@@ -65,6 +70,7 @@ const App = () => {
 	const [importNotice, setImportNotice] = useState<string | null>(null);
 	const [isDragging, setIsDragging] = useState(false);
 	const [isConfigOpen, setIsConfigOpen] = useState(false);
+	const [isHelpOpen, setIsHelpOpen] = useState(false);
 	const [showKey, setShowKey] = useState(false);
 	const [synthStatus, setSynthStatus] = useState<string | null>(null);
 	const [synthError, setSynthError] = useState<string | null>(null);
@@ -99,6 +105,12 @@ const App = () => {
 				heading: getHeadingMatch(line, config.chunking.headingDelimiter ?? ""),
 			}));
 	}, [rawText, config.chunking.headingDelimiter]);
+	const frontmatterInfo = useMemo(() => {
+		if (!isMarkdownFileName(fileName)) {
+			return null;
+		}
+		return parseYamlFrontmatter(rawText);
+	}, [fileName, rawText]);
 	const isValeonMode = config.chunking.mode === "valeon";
 	const activeRules = isValeonMode
 		? {
@@ -211,6 +223,10 @@ const App = () => {
 		downloadText("speechtext.txt", normalizedText);
 	};
 
+	const handleRemoveFrontmatter = () => {
+		setRawText((value) => stripYamlFrontmatter(value));
+	};
+
 	const handleDownloadConfig = () => {
 		downloadJson("valeon-tts-config.json", config);
 	};
@@ -266,15 +282,23 @@ const App = () => {
 								Prompt to audio, tuned for long form narration
 							</h1>
 							<p className="max-w-2xl text-sm opacity-80 md:text-base">
-								Drop a text or Markdown file or paste text, tune chunking, and export
-								speechtext or audio. Everything stays in your browser except the
-								TTS calls.
+								Drop a text or Markdown file or paste text, tune chunking, and
+								export speechtext or audio. Everything stays in your browser
+								except the TTS calls.
 							</p>
 						</div>
 					</div>
 
 					<div className="flex flex-row items-center gap-2">
 						<ThemeToggle />
+						<button
+							type="button"
+							className="btn btn-primary btn-sm btn-square"
+							onClick={() => setIsHelpOpen(true)}
+							aria-label="Open help dialog"
+						>
+							<i className="fa-solid fa-question" />
+						</button>
 						<button
 							type="button"
 							className="btn btn-primary btn-sm btn-square"
@@ -293,22 +317,34 @@ const App = () => {
 									<div>
 										<h2 className="card-title">Input</h2>
 										<p className="text-sm opacity-70">
-											Paste text or drop a .txt or .md file. The file replaces the
-											current text.
+											Paste text or drop a .txt or .md file. The file replaces
+											the current text.
 										</p>
 									</div>
-									<button
-										type="button"
-										className="btn btn-sm btn-warning"
-										onClick={() => {
-											setRawText("");
-											setFileName(null);
-											setFileNotice(null);
-										}}
-									>
-										<i className="fa-solid fa-x"></i>
-										Clear
-									</button>
+									<div className="flex flex-row items-center gap-2">
+										{frontmatterInfo ? (
+											<button
+												type="button"
+												className="btn btn-sm btn-outline"
+												onClick={handleRemoveFrontmatter}
+											>
+												<i className="fa-solid fa-eraser"></i>
+												Remove frontmatter
+											</button>
+										) : null}
+										<button
+											type="button"
+											className="btn btn-sm btn-warning"
+											onClick={() => {
+												setRawText("");
+												setFileName(null);
+												setFileNotice(null);
+											}}
+										>
+											<i className="fa-solid fa-x"></i>
+											Clear
+										</button>
+									</div>
 								</div>
 
 								<textarea
@@ -870,6 +906,7 @@ const App = () => {
 						/>
 					</div>
 				) : null}
+				<HelpDialog isOpen={isHelpOpen} onClose={() => setIsHelpOpen(false)} />
 			</div>
 		</div>
 	);
