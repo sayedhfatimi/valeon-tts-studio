@@ -3,6 +3,10 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+@custom-variant light (&:where([data-theme=light], [data-theme=light] *));
+
+
 :root {
 	--valeon-sky: 196 83% 94%;
 	--valeon-peach: 28 90% 92%;
