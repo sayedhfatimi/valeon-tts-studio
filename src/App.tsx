@@ -269,14 +269,16 @@ const App = () => {
 						</div>
 					</div>
 
-					<button
-						type="button"
-						className="btn btn-primary btn-sm"
-						onClick={() => setIsConfigOpen(true)}
-					>
-						<i className="fa-solid fa-sliders" />
-						Configuration
-					</button>
+					<div className="flex flex-row items-center gap-2">
+						<ThemeToggle />
+						<button
+							type="button"
+							className="btn btn-primary btn-sm btn-square"
+							onClick={() => setIsConfigOpen(true)}
+						>
+							<i className="fa-solid fa-sliders" />
+						</button>
+					</div>
 				</header>
 
 				<main className="flex flex-col gap-6">
@@ -521,7 +523,6 @@ const App = () => {
 									</p>
 								</div>
 								<div className="flex flex-wrap gap-2">
-									<ThemeToggle />
 									<button
 										type="button"
 										className="btn btn-sm btn-error"
