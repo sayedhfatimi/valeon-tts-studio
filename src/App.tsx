@@ -6,6 +6,7 @@ import {
 	useRef,
 	useState,
 } from "react";
+import ThemeToggle from "./components/ThemeToggle";
 import { downloadBlob, downloadJson, downloadText } from "./lib/download";
 import { requestSpeech } from "./lib/openai";
 import {
@@ -253,28 +254,21 @@ const App = () => {
 			<div className="pointer-events-none absolute bottom-0 left-0 h-72 w-72 rounded-full bg-secondary/20 blur-3xl" />
 			<div className="relative mx-auto flex max-w-6xl flex-col gap-8 px-6 py-10">
 				<header className="flex flex-row items-center justify-between gap-4">
-					<div className="space-y-3">
-						<div className="flex flex-wrap items-center gap-3">
-							<span className="badge badge-primary badge-lg">Valeon TTS</span>
-							<span className="badge badge-outline">Local only</span>
-							<span className="badge badge-outline">OpenAI TTS</span>
-						</div>
-						<div className="flex items-center gap-4">
-							<img
-								src="/logo.png"
-								alt="Valeon TTS Studio logo"
-								className="size-32 rounded-xl object-contain"
-							/>
-							<div className="space-y-2">
-								<h1 className="text-3xl font-semibold tracking-tight md:text-4xl">
-									Prompt to audio, tuned for long form narration
-								</h1>
-								<p className="max-w-2xl text-sm opacity-80 md:text-base">
-									Drop a plaintext file or paste text, tune chunking, and export
-									speechtext or audio. Everything stays in your browser except
-									the TTS calls.
-								</p>
-							</div>
+					<div className="flex items-center gap-4">
+						<img
+							src="/logo.png"
+							alt="Valeon TTS Studio logo"
+							className="size-32 rounded-xl object-contain"
+						/>
+						<div className="space-y-2">
+							<h1 className="text-3xl font-semibold tracking-tight md:text-4xl">
+								Prompt to audio, tuned for long form narration
+							</h1>
+							<p className="max-w-2xl text-sm opacity-80 md:text-base">
+								Drop a plaintext file or paste text, tune chunking, and export
+								speechtext or audio. Everything stays in your browser except the
+								TTS calls.
+							</p>
 						</div>
 					</div>
 
@@ -530,6 +524,7 @@ const App = () => {
 									</p>
 								</div>
 								<div className="flex flex-wrap gap-2">
+									<ThemeToggle />
 									<button
 										type="button"
 										className="btn btn-sm btn-error"
