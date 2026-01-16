@@ -11,10 +11,12 @@ const HelpDialog = ({ isOpen, onClose }: HelpDialogProps) => {
 	return (
 		<div className="modal modal-open">
 			<div className="modal-box my-6 max-w-3xl">
-				<div className="flex flex-wrap items-start justify-between gap-4">
+				<div className="flex flex-wrap items-center md:items-start justify-between gap-4">
 					<div>
-						<h2 className="text-lg font-semibold">Getting started</h2>
-						<p className="text-sm opacity-70">
+						<h2 className="text-md md:text-lg font-semibold">
+							Getting started
+						</h2>
+						<p className="text-xs md:text-sm opacity-70">
 							A quick guide to move from text to audio.
 						</p>
 					</div>
